@@ -8,7 +8,7 @@ class AuthorBase(BaseModel):
         ...,
         min_length=2,
         max_length=255,
-        examples=["Лев Николаевич Толстой"],
+        examples=['Лев Николаевич Толстой'],
     )
 
     birth_year: int | None = Field(
@@ -23,7 +23,7 @@ class AuthorBase(BaseModel):
         examples=["Великий русский писатель, автор знаметиного романа 'Война и мир'."],
     )
 
-    @field_validator("full_name")
+    @field_validator('full_name')
     @classmethod
     def validate_full_name(cls, value: str) -> str:
         """
@@ -31,17 +31,17 @@ class AuthorBase(BaseModel):
         """
         value = value.strip()
         if not value:
-            raise ValueError("ФИО автора не может быть пустым")
+            raise ValueError('ФИО автора не может быть пустым')
         return value
 
-    @field_validator("birth_year")
+    @field_validator('birth_year')
     @classmethod
     def validate_birth_year(cls, value: int | None) -> int | None:
         """
         Валидация года рождения
         """
         if value is not None and value > date.today().year:
-            raise ValueError("Год рождения не может быть в будущем")
+            raise ValueError('Год рождения не может быть в будущем')
 
         return value
 
@@ -67,7 +67,7 @@ class AuthorUpdate(BaseModel):
         max_length=5000,
     )
 
-    @field_validator("full_name")
+    @field_validator('full_name')
     @classmethod
     def validate_full_name(cls, value: str | None) -> str | None:
         """
@@ -78,17 +78,17 @@ class AuthorUpdate(BaseModel):
 
         value = value.strip()
         if not value:
-            raise ValueError("ФИО автора не может быть пустым")
+            raise ValueError('ФИО автора не может быть пустым')
         return value
 
-    @field_validator("birth_year")
+    @field_validator('birth_year')
     @classmethod
     def validate_birth_year(cls, value: int | None) -> int | None:
         """
         Валидация года рождения
         """
         if value is not None and value > date.today().year:
-            raise ValueError("Год рождения не может быть в будущем")
+            raise ValueError('Год рождения не может быть в будущем')
 
         return value
 

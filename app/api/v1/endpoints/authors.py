@@ -11,7 +11,7 @@ router = APIRouter()
 
 # Создать автора
 @router.post(
-    "",
+    '',
     response_model=AuthorRead,
     status_code=status.HTTP_201_CREATED,
 )
@@ -30,11 +30,11 @@ async def create_author(
 
 # Получить авторов
 @router.get(
-    "",
+    '',
     response_model=list[AuthorRead],
 )
 async def get_authors(
-    search: str | None = Query(default=None, description="Поиск по ФИО автора"),
+    search: str | None = Query(default=None, description='Поиск по ФИО автора'),
     limit: int = Query(default=20, ge=1, le=100),
     offset: int = Query(default=0, ge=0),
     session: AsyncSession = Depends(get_async_session),
@@ -42,11 +42,9 @@ async def get_authors(
     statement = select(Author)
 
     if search:
-        statement = statement.where(Author.full_name.ilike(f"%{search}%"))
+        statement = statement.where(Author.full_name.ilike(f'%{search}%'))
 
-    statement = (
-        statement.order_by(Author.full_name).limit(limit=limit).offset(offset=offset)
-    )
+    statement = statement.order_by(Author.full_name).limit(limit=limit).offset(offset=offset)
 
     result = await session.execute(statement)
 
@@ -55,7 +53,7 @@ async def get_authors(
 
 # Получить автора по айди
 @router.get(
-    "/{author_id}",
+    '/{author_id}',
     response_model=AuthorRead,
 )
 async def get_author(
@@ -67,7 +65,7 @@ async def get_author(
     if author is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Автор не найден",
+            detail='Автор не найден',
         )
 
     return author
@@ -75,7 +73,7 @@ async def get_author(
 
 # Обновить информацию у автора
 @router.patch(
-    "/{author_id}",
+    '/{author_id}',
     response_model=AuthorRead,
 )
 async def update_author(
@@ -88,7 +86,7 @@ async def update_author(
     if author is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Автор не найден",
+            detail='Автор не найден',
         )
 
     update_data = author_data.model_dump(exclude_unset=True)
@@ -104,7 +102,7 @@ async def update_author(
 
 # Удалить автора
 @router.delete(
-    "/{author_id}",
+    '/{author_id}',
     status_code=status.HTTP_204_NO_CONTENT,
 )
 async def delete_author(
@@ -116,7 +114,7 @@ async def delete_author(
     if author is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Автор не найден",
+            detail='Автор не найден',
         )
 
     await session.delete(author)
