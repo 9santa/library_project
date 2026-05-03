@@ -2,14 +2,11 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.db.session import get_session
+from app.core.db import get_async_session
 from app.models.author import Author
 from app.schemas.author import AuthorCreate, AuthorRead, AuthorUpdate
 
-router = APIRouter(
-    prefix="/authors",
-    tags=["Authors"],
-)
+router = APIRouter()
 
 
 # Создать автора
@@ -20,7 +17,7 @@ router = APIRouter(
 )
 async def create_author(
     author_data: AuthorCreate,
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_async_session),
 ):
     author = Author(**author_data.model_dump())
 
@@ -40,7 +37,7 @@ async def get_authors(
     search: str | None = Query(default=None, description="Поиск по ФИО автора"),
     limit: int = Query(default=20, ge=1, le=100),
     offset: int = Query(default=0, ge=0),
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_async_session),
 ):
     statement = select(Author)
 
@@ -63,7 +60,7 @@ async def get_authors(
 )
 async def get_author(
     author_id: int,
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_async_session),
 ):
     author = await session.get(Author, author_id)
 
@@ -84,7 +81,7 @@ async def get_author(
 async def update_author(
     author_id: int,
     author_data: AuthorUpdate,
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_async_session),
 ):
     author = await session.get(Author, author_id)
 
@@ -112,7 +109,7 @@ async def update_author(
 )
 async def delete_author(
     author_id: int,
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_async_session),
 ):
     author = await session.get(Author, author_id)
 

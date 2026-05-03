@@ -1,8 +1,9 @@
 from datetime import datetime
+
 from sqlalchemy import DateTime, Integer, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column
 
-from app.db.base import Base
+from app.core.db import Base
 
 
 class Author(Base):
@@ -10,14 +11,7 @@ class Author(Base):
     Автор sqlalchemy-модель
     """
 
-    __tablename__ = "authors"
-
-    # id
-    id: Mapped[int] = mapped_column(
-        Integer,
-        primary_key=True,
-        autoincrement=True,
-    )
+    __tablename__ = 'authors'
 
     # полное имя
     full_name: Mapped[str] = mapped_column(
