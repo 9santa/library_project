@@ -1,9 +1,19 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
-app = FastAPI(title="Electronic Library API") #создает объект под приложение. Точка входа
+from app.core import init_db
 
-@app.get("/health") #запрос на работоспособность сервера
-async def health(): 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await init_db()
+    yield
+
+
+app = FastAPI(title="Electronic Library API", lifespan=lifespan)
+
+
+@app.get("/health")
+async def health():
     return {"status": "ok"}
-
 
