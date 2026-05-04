@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import get_async_session
@@ -111,7 +112,15 @@ async def delete_author(
     author = await session.get(Author, author_id)
     author = author_or_404(author)
 
-    await session.delete(author)
-    await session.commit()
+    # Защита: нельзя удалить автора, если есть связанные с ним данные
+    try:
+        await session.delete(author)
+        await session.commit()
+    except IntegrityError:
+        await session.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail='Нельзя удалить автора: есть связанные данные',
+        )
 
     return None
