@@ -17,6 +17,7 @@ class AuthorBase(BaseModel):
     """
     Базовая схема автора.
     """
+
     full_name: str = Field(
         ...,
         min_length=2,
@@ -59,6 +60,7 @@ class AuthorCreate(AuthorBase):
     """
     Схема создания автора.
     """
+
     pass
 
 
@@ -66,6 +68,7 @@ class AuthorUpdate(BaseModel):
     """
     Схема обновления автора.
     """
+
     full_name: str | None = Field(
         default=None,
         min_length=2,
@@ -108,6 +111,7 @@ class AuthorRead(BaseModel):
     """
     Схема чтения автора.
     """
+
     id: int
     full_name: str
     birth_year: int | None
