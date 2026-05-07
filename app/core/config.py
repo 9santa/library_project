@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     postgres_db: str = 'POSTGRES_DB'
     postgres_host: str = 'POSTGRES_HOST'
     postgres_port: int = 'POSTGRES_PORT'
+    title: str = 'Library API'
 
     @property
     def database_url(self) -> str:
