@@ -69,3 +69,26 @@ docker compose up --build
 ## Цель проекта
 
 Код написан в образовательных целях студентами ТюмГУ.
+
+
+## AI setup
+
+Проект использует локальную LLM через Ollama.
+
+Первый запуск:
+```bash
+docker compose up -d ollama
+docker compose exec ollama ollama pull qwen2.5:3b
+docker compose up -d --build
+```
+
+Обычный запуск:
+```bash
+docker compose up -d
+```
+
+Не рекомендуется использовать:
+```bash
+docker compose down -v
+```
+так как эта команда удалит volume с моделью.
