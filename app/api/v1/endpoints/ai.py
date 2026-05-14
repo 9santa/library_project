@@ -22,6 +22,12 @@ async def get_book_recommendations(
             detail='Ollama сервис не доступен. Проверьте, что ollama контейнер запущен.',
         ) from exc
 
+    except httpx.HTTPError as exc:
+        raise HTTPException(
+            status_code=503,
+            detail='Ошибка при обращении к Ollama сервису.',
+        ) from exc
+
     except ValueError as exc:
         raise HTTPException(
             status_code=502,
