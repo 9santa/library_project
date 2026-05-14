@@ -7,7 +7,7 @@ from app.core.security import hash_password
 from app.models.user import User
 from app.schemas.user import UserCreate, UserRead
 
-router = APIRouter(prefix='/users', tags=['users'])
+router = APIRouter()
 
 
 @router.post('/register', response_model=UserRead, status_code=status.HTTP_201_CREATED)
